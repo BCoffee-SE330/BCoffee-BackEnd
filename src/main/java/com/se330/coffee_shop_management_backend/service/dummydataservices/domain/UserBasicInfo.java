@@ -101,7 +101,7 @@ public class UserBasicInfo {
                 "Phùng", "Tô", "Trịnh", "Tống", "Bạch", "Hồng", "Lục", "Tiêu"
         };
         for (int i = 0; i < 10; i++) {
-            String gender = customerFirstNames[i].contains("Thị") ? "Female" : "Male";
+            String gender = customerFirstNames[i].contains("Thị") ? "Nữ" : "Nam";
             User customerUser = userService.create(CreateUserRequest.builder()
                     .email("customer" + (i + 1) + "@example.com")
                     .password(defaultPassword)
