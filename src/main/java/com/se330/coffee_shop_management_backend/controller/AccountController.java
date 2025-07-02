@@ -1,6 +1,7 @@
 package com.se330.coffee_shop_management_backend.controller;
 
 import com.se330.coffee_shop_management_backend.dto.request.user.UpdatePasswordRequest;
+import com.se330.coffee_shop_management_backend.dto.request.user.UpdateUserRequest;
 import com.se330.coffee_shop_management_backend.dto.response.DetailedErrorResponse;
 import com.se330.coffee_shop_management_backend.dto.response.ErrorResponse;
 import com.se330.coffee_shop_management_backend.dto.response.SingleResponse;
@@ -71,6 +72,44 @@ public class AccountController extends AbstractBaseController {
                         UserResponse.convert(userService.getUser())
                 )
         );
+    }
+
+    @PatchMapping("/me")
+    @Operation(
+            summary = "Update current user endpoint",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = UserResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad request",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Unauthorized",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<UserResponse> updateMe(
+            @Parameter(description = "Request body to update current user", required = true)
+            @RequestBody @Valid final UpdateUserRequest request
+    ) throws BindException {
+        return ResponseEntity.ok(UserResponse.convert(userService.updateMe(request)));
     }
 
     @PostMapping("/password")

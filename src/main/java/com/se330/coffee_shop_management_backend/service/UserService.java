@@ -39,7 +39,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.UUID;
 
@@ -273,6 +275,27 @@ public class UserService {
             } else {
                 user.setEmailVerifiedAt(null);
             }
+        }
+
+        return updateUser(user, request);
+    }
+
+    @Transactional
+    public User updateMe(UpdateUserRequest request) throws BindException {
+        User user = getUser();
+        user.setEmail(request.getEmail());
+        user.setName(request.getName());
+        user.setLastName(request.getLastName());
+        user.setGender(request.getGender());
+        user.setPhoneNumber(request.getPhoneNumber());
+
+        // Parse the birthDate string to LocalDateTime
+        if (request.getBirthDate() != null && !request.getBirthDate().isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate birthDate = LocalDate.parse(request.getBirthDate(), formatter);
+            // Convert LocalDate to LocalDateTime at start of day
+            LocalDateTime birthDateTime = birthDate.atStartOfDay();
+            user.setBirthDate(birthDateTime);
         }
 
         return updateUser(user, request);

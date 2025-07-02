@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,4 +45,8 @@ public abstract class AbstractBaseUpdateUserRequest {
         example = "DOE"
     )
     private String lastName;
+
+    private String phoneNumber;
+    private String gender;
+    private String birthDate;
 }
